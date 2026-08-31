@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Night Just For You ✨</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0d0618 0%, #1e0d35 45%, #0d0618 100%);
+      font-family: 'Lato', sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* Starfield */
+    .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .star {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle var(--d, 3s) ease-in-out infinite;
+      opacity: var(--o, 0.6);
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: var(--o, 0.6); transform: scale(1); }
+      50% { opacity: 0.1; transform: scale(0.5); }
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 60px 24px 100px;
+    }
+
+    /* Floating roses */
+    .petal {
+      position: fixed;
+      font-size: 1.2rem;
+      animation: floatPetal linear infinite;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    @keyframes floatPetal {
+      0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.6; }
+      90%  { opacity: 0.4; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Header */
+    .header { text-align: center; margin-bottom: 52px; }
+
+    .opener {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: rgba(249,196,210,0.7);
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 7vw, 4rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, #f9c4d2 0%, #f4a261 50%, #f9c4d2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .tagline {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.75;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .tagline .guapa {
+      color: #f9c4d2;
+      font-style: italic;
+      font-weight: 700;
+    }
+
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 40px 0;
+      opacity: 0.35;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(249,196,210,0.8), transparent);
+    }
+    .divider span { font-size: 1rem; }
+
+    /* Date card */
+    .date-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(249,196,210,0.2);
+      border-radius: 28px;
+      padding: 40px 36px;
+      margin-bottom: 28px;
+      backdrop-filter: blur(12px);
+    }
+
+    .date-header {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: #f9c4d2;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .date-header .day {
+      display: block;
+      font-size: 0.85rem;
+      font-family: 'Lato', sans-serif;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(249,196,210,0.6);
+      margin-bottom: 6px;
+    }
+
+    /* Timeline */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+
+    .tl-item {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      position: relative;
+    }
+    .tl-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 27px;
+      top: 52px;
+      width: 2px;
+      height: calc(100% - 20px);
+      background: linear-gradient(to bottom, rgba(249,196,210,0.3), rgba(249,196,210,0.05));
+    }
+
+    .tl-dot {
+      width: 56px;
+      min-width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(249,196,210,0.2), rgba(244,162,97,0.2));
+      border: 1px solid rgba(249,196,210,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .tl-body { padding: 10px 0 32px; }
+
+    .tl-time {
+      font-size: 0.72rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(249,196,210,0.6);
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+
+    .tl-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .tl-desc {
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.65;
+    }
+    .tl-desc em { color: #f4a261; font-style: italic; }
+
+    /* Church note */
+    .church-note {
+      background: rgba(249,196,210,0.07);
+      border: 1px solid rgba(249,196,210,0.18);
+      border-radius: 16px;
+      padding: 18px 22px;
+      margin-bottom: 28px;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.65;
+      text-align: center;
+    }
+    .church-note strong { color: #f9c4d2; }
+
+    /* Accept section */
+    .accept-section { text-align: center; }
+
+    .accept-question {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: #fff;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .accept-question .spanish {
+      color: #f9c4d2;
+      font-style: italic;
+    }
+    .accept-sub {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 28px;
+    }
+
+    .accept-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #b5338a, #f4a261);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      border: none;
+      border-radius: 50px;
+      padding: 16px 48px;
+      cursor: pointer;
+      box-shadow: 0 8px 32px rgba(181,51,138,0.45);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      animation: pulseGlow 2.5s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 8px 32px rgba(181,51,138,0.45); }
+      50% { box-shadow: 0 8px 48px rgba(181,51,138,0.75), 0 0 60px rgba(244,162,97,0.2); }
+    }
+    .accept-btn:hover { transform: translateY(-3px); }
+    .accept-btn:active { transform: translateY(0); }
+
+    /* After accept */
+    .after-accept {
+      display: none;
+      animation: fadeUp 0.5s ease forwards;
+    }
+    .after-accept.show { display: block; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .yes-message {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #f9c4d2;
+      margin-bottom: 10px;
+      animation: heartbeat 1.5s ease-in-out infinite;
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14% { transform: scale(1.1); }
+      28% { transform: scale(1); }
+    }
+    .yes-sub {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .action-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .notify-btn {
+      background: transparent;
+      border: 1px solid rgba(249,196,210,0.5);
+      color: #f9c4d2;
+    }
+    .notify-btn:hover { background: rgba(249,196,210,0.1); transform: translateY(-2px); }
+
+    /* Confetti */
+    #confetti-canvas {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: rgba(255,255,255,0.2);
+      font-size: 0.78rem;
+      margin-top: 40px;
+    }
+    .footer-note span { color: #f9c4d2; }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      .page { padding: 40px 18px 72px; }
+
+      .header { margin-bottom: 36px; }
+      .opener { font-size: 0.9rem; letter-spacing: 1.5px; }
+
+      .tagline { font-size: 0.95rem; }
+
+      .divider { margin: 28px 0; }
+
+      .date-card { padding: 28px 20px; border-radius: 20px; }
+      .date-header { font-size: 1.3rem; margin-bottom: 24px; }
+
+      .tl-dot {
+        width: 46px; min-width: 46px; height: 46px;
+        font-size: 1.1rem;
+      }
+      .tl-item:not(:last-child)::after { left: 22px; top: 44px; }
+      .tl-body { padding: 6px 0 26px; }
+      .tl-title { font-size: 1.05rem; }
+      .tl-desc { font-size: 0.88rem; }
+
+      .church-note { font-size: 0.88rem; padding: 16px 18px; }
+
+      .accept-question { font-size: 1.3rem; }
+      .accept-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 16px 24px;
+        font-size: 1rem;
+      }
+
+      .yes-message { font-size: 1.5rem; }
+      .yes-sub { font-size: 0.88rem; }
+
+      .action-btns { width: 100%; }
+      .notify-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 15px 24px;
+        font-size: 0.92rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<canvas id="confetti-canvas"></canvas>
+
+<div class="page">
+
+  <header class="header">
+    <p class="opener">una noche especial para ti</p>
+    <h1>Genavy</h1>
+    <p class="tagline">
+      I've been thinking about the perfect night for us —
+      and I think I finally figured it out.
+      All you have to do is say yes.
+    </p>
+  </header>
+
+  <div class="divider"><span>🌹</span></div>
+
+  <div class="date-card">
+    <div class="date-header">
+      <span class="day">Thursday · September 3rd</span>
+      Our Night
+    </div>
+
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-dot">🚗</div>
+        <div class="tl-body">
+          <div class="tl-time">6:15 PM</div>
+          <div class="tl-title">Meet at mine</div>
+          <div class="tl-desc">
+            Come by my place — I'll drive us for the night.
+            <em>You don't have to worry about a thing.</em>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot">🍝</div>
+        <div class="tl-body">
+          <div class="tl-time">6:30 PM</div>
+          <div class="tl-title">Roman God of Fire</div>
+          <div class="tl-desc">
+            That Italian spot you've been wanting to try — consider it done.
+            <em>Dinner is on me, obviously.</em>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot">💃</div>
+        <div class="tl-body">
+          <div class="tl-time">8:00 PM</div>
+          <div class="tl-title">Bachata at Dave & Busters Tempe</div>
+          <div class="tl-desc">
+            Because every good night needs music you can move to.
+            <em>Close, slow, and romantic — just how it should be.</em>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="church-note">
+    <strong>Hey, real quick —</strong> I know we usually do Unified on Thursday nights
+    at Grace Community Church. I thought about that — I promise this one is worth skipping for. 🤍
+  </div>
+
+  <div class="divider"><span>✨</span></div>
+
+  <div class="accept-section">
+
+    <div id="pre-accept">
+      <p class="accept-question">
+        So what do you say,<br>
+        <span class="spanish">mi guapa?</span>
+      </p>
+      <p class="accept-sub">Thursday. Dinner. Dancing. You and me.</p>
+      <button class="accept-btn" onclick="handleAccept()">
+        🌹 &nbsp;I'm in
+      </button>
+    </div>
+
+    <div class="after-accept" id="after-accept">
+      <div class="yes-message">She said yes 💃🌹</div>
+      <p class="yes-sub">
+        That's what I thought, <em style="color:#f9c4d2;">preciosa.</em><br>
+        Save the date and let me know — I'll handle everything else.
+      </p>
+      <div class="action-btns">
+        <a class="notify-btn" id="notify-link" href="#">
+          💌 &nbsp;Tell him I said yes
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">Made with <span>♥</span> just for you, Genavy</div>
+
+</div>
+
+<script>
+  // Starfield
+  (function() {
+    const c = document.getElementById('stars');
+    for (let i = 0; i < 130; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--o:${0.15+Math.random()*0.75};animation-delay:${Math.random()*6}s;`;
+      c.appendChild(s);
+    }
+  })();
+
+  // Floating petals
+  (function() {
+    const emojis = ['🌹','🌸','✨','🌺'];
+    for (let i = 0; i < 8; i++) {
+      const p = document.createElement('div');
+      p.className = 'petal';
+      p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      p.style.cssText = `
+        left: ${Math.random()*100}%;
+        animation-duration: ${8+Math.random()*10}s;
+        animation-delay: ${Math.random()*12}s;
+        font-size: ${0.8+Math.random()*0.8}rem;
+      `;
+      document.body.appendChild(p);
+    }
+  })();
+
+  const SMS_URL = 'sms:4802711499?&body=' + encodeURIComponent('I said yes 🌹 See you Thursday! 💃');
+
+  function handleAccept() {
+    document.getElementById('pre-accept').style.display = 'none';
+    const after = document.getElementById('after-accept');
+    after.classList.add('show');
+    document.getElementById('notify-link').href = SMS_URL;
+    launchConfetti();
+  }
+
+  // Confetti
+  function launchConfetti() {
+    const canvas = document.getElementById('confetti-canvas');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const ctx = canvas.getContext('2d');
+    const colors = ['#f9c4d2','#f4a261','#b5338a','#fff','#ffd700','#8e44ad','#ff69b4'];
+    const pieces = Array.from({length: 180}, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      w: 6 + Math.random() * 9,
+      h: 3 + Math.random() * 5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speed: 2 + Math.random() * 4,
+      angle: Math.random() * Math.PI * 2,
+      spin: (Math.random() - 0.5) * 0.18,
+      drift: (Math.random() - 0.5) * 1.5,
+    }));
+    let frame = 0;
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      pieces.forEach(p => {
+        p.y += p.speed; p.x += p.drift; p.angle += p.spin;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = Math.max(0, 1 - frame / 180);
+        ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+        ctx.restore();
+      });
+      frame++;
+      if (frame < 250) requestAnimationFrame(draw);
+      else ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    requestAnimationFrame(draw);
+  }
+</script>
+</body>
+</html>
